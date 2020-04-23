@@ -13,6 +13,13 @@ import (
 	"net/http"
 )
 
+// @Summary Add a new article
+// @Description get Article by id
+// @Produce json
+// @Param id path string true "ID"
+// @Success 200 {object} pkg.Response
+// @Failure 400 {object} pkg.Response
+// @Router /article/{id} [get]
 func GetArticle(c *gin.Context) {
 	id := com.StrTo(c.Param("id")).MustInt()
 

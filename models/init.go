@@ -48,9 +48,11 @@ func init() {
 		return tablePrefix + defaultTableName
 	}
 
+	//数据库表名为单表
 	db.SingularTable(true)
+	//数据库日志
 	db.LogMode(true)
-	db.DB().SetConnMaxLifetime(10)
+	db.DB().SetMaxOpenConns(10)
 	db.DB().SetConnMaxLifetime(100)
 }
 

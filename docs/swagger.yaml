@@ -1,0 +1,67 @@
+basePath: '{{.BasePath}}'
+definitions:
+  pkg.Response:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      msg:
+        type: string
+    type: object
+host: '{{.Host}}'
+info:
+  contact: {}
+  description: This is a sample server blog server
+  license: {}
+  title: Swagger Example API
+  version: 0.0.1
+paths:
+  /article/{id}:
+    get:
+      description: get Article by id
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg.Response'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/pkg.Response'
+            type: object
+      summary: Add a new article
+  /tag:
+    post:
+      parameters:
+      - description: Name
+        in: query
+        name: name
+        required: true
+        type: string
+      - description: State
+        in: query
+        name: state
+        type: integer
+      - description: CreatedBy
+        in: query
+        name: created_by
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 新增文章标签
+swagger: "2.0"
