@@ -65,7 +65,7 @@
                         "in": "query"
                     },
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "CreatedBy",
                         "name": "created_by",
                         "in": "query"

@@ -6,6 +6,7 @@ import (
 	"github.com/unknwon/com"
 	"go_blog/models"
 	"go_blog/pkg/e"
+	"log"
 	"net/http"
 )
 
@@ -19,13 +20,13 @@ func GetTags(c *gin.Context) {
 // @Produce json
 // @Param name query string true "Name"
 // @Param state query int false "State"
-// @Param created_by query int false "CreatedBy"
+// @Param created_by query string false "CreatedBy"
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
 // @Router /tag [post]
 func AddTag(c *gin.Context) {
 	name := c.Query("name")
 	state := com.StrTo(c.DefaultQuery("state", "0")).MustInt()
-	createdBy := c.Query("createdBy")
+	createdBy := c.Query("created_by")
 
 	vaild := validation.Validation{}
 	vaild.Required(name, "name").Message("名称不能为空")
@@ -42,6 +43,10 @@ func AddTag(c *gin.Context) {
 		} else {
 			code = e.ERROR_EXIST_TAG
 		}
+	} else {
+		for _, err := range vaild.Errors {
+			log.Printf("err.key: %v,message:%v", err.Key, err.Message)
+		}
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
@@ -53,7 +58,7 @@ func AddTag(c *gin.Context) {
 func EditTag(c *gin.Context) {
 	id := com.StrTo(c.Query("id")).MustInt()
 	name := c.Query("name")
-	modifiedBy := c.Query("modifiedBy")
+	modifiedBy := c.Query("modified_by")
 	vaild := validation.Validation{}
 
 	state := -1
@@ -82,6 +87,10 @@ func EditTag(c *gin.Context) {
 		} else {
 			code = e.ERROR_NOT_EXIST_TAG
 		}
+	} else {
+		for _, err := range vaild.Errors {
+			log.Printf("err.key: %v,message:%v", err.Key, err.Message)
+		}
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -105,6 +114,10 @@ func DeleteTag(c *gin.Context) {
 			code = e.ERROR_NOT_EXIST_TAG
 		} else {
 			models.DeleteTag(id)
+		}
+	} else {
+		for _, err := range vaild.Errors {
+			log.Printf("err.key: %v,message:%v", err.Key, err.Message)
 		}
 	}
 
