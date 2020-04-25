@@ -34,11 +34,12 @@ func init() {
 	host = sec.Key("HOST").MustString("localhost:3306")
 	tablePrefix = sec.Key("TABLE_PREFIX").MustString("blog_")
 
-	db, err = gorm.Open(dbType, fmt.Sprintf("%s:%s@(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+	dbLink := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		user,
 		password,
 		host,
-		dbName))
+		dbName)
+	db, err = gorm.Open(dbType, dbLink)
 
 	if err != nil {
 		log.Println(err)

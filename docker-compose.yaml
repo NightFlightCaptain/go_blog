@@ -1,0 +1,38 @@
+# 启动所有服务
+#$ docker-compose up
+# 关闭所有服务
+#$ docker-compose stop
+version: '2'
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql57
+    ports:
+    - "3307:3306"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=go_blog
+    networks:
+      - for-mysql-net
+    volumes:
+    - ./docker/my/data:/var/lib/mysql
+#    - ./docker/my/mysql.cnf:/etc/mysql.cnf
+#    - ./docker/mysql/init:/docker-entrypoint-initdb.d/
+
+  web:
+#    image: golang:latest
+    container_name: go_web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql
+    ports:
+    - "8099:9091"
+    networks:
+      - for-mysql-net
+    restart: on-failure
+
+networks:
+  for-mysql-net:
