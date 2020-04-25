@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-type AppConfig struct {
+type appConfig struct {
 	JwtSecret       string   `yaml:"jwt_secret"`
 	PageSize        int      `yaml:"page_size"`
 	RuntimeRootPath string   `yaml:"runtime_root_path"`
@@ -21,14 +21,14 @@ type AppConfig struct {
 	TimeFormat      string   `yaml:"time_format"`
 }
 
-type ServerConfig struct {
+type serverConfig struct {
 	RunMode      string        `yaml:"run_mode"`
 	HTTPPort     int           `yaml:"HTTP_port"`
 	ReadTimeout  time.Duration `yaml:"read_timeout"`
 	WriteTimeout time.Duration `yaml:"write_timeout"`
 }
 
-type DatabaseConfig struct {
+type databaseConfig struct {
 	Type        string `yaml:"type"`
 	User        string `yaml:"user"`
 	Password    string `yaml:"password"`
@@ -37,16 +37,16 @@ type DatabaseConfig struct {
 	TablePrefix string `yaml:"table_prefix"`
 }
 
-type ConfigYaml struct {
-	App      AppConfig      `yaml:"app"`
-	Server   ServerConfig   `yaml:"server"`
-	Database DatabaseConfig `yaml:"database"`
+type configYaml struct {
+	App      appConfig      `yaml:"app"`
+	Server   serverConfig   `yaml:"server"`
+	Database databaseConfig `yaml:"database"`
 }
 
-var Config = &ConfigYaml{}
+var Config = &configYaml{}
 
 func init() {
-	Config = new(ConfigYaml)
+	Config = new(configYaml)
 
 	filename := "conf/app.yaml"
 	yamlFile, err := ioutil.ReadFile(filename)

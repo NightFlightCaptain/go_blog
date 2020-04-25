@@ -5,7 +5,9 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"go_blog/pkg/setting"
+	"go_blog/pkg/upload"
 	"go_blog/routers/api"
+	"net/http"
 	"time"
 )
 
@@ -13,9 +15,11 @@ func InitRouter() *gin.Engine {
 	r := gin.Default()
 	gin.SetMode(setting.Config.Server.RunMode)
 
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	r.StaticFS("upload/images", http.Dir(upload.GetImageFullPath()))
 
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.GET("/auth", api.GetAuth)
+	r.POST("/upload", api.UploadImage)
 
 	r.GET("/wait", func(context *gin.Context) {
 		time.Sleep(10 * time.Second)
