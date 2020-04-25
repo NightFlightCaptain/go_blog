@@ -74,17 +74,12 @@ func init() {
 		dbType, dbName, user, password, host, tablePrefix string
 	)
 
-	sec, err := setting.Cfg.GetSection("database")
-	if err != nil {
-		log.Fatal(2, "Fail to get section 'database':%v", err)
-	}
-
-	dbType = sec.Key("DB_TYPE").MustString("mysql")
-	dbName = sec.Key("NAME").MustString("go_blog")
-	user = sec.Key("USER").MustString("root")
-	password = sec.Key("PASSWORD").MustString("")
-	host = sec.Key("HOST").MustString("localhost:3306")
-	tablePrefix = sec.Key("TABLE_PREFIX").MustString("blog_")
+	dbType = setting.Config.Database.Type
+	dbName = setting.Config.Database.Name
+	user = setting.Config.Database.User
+	password = setting.Config.Database.Password
+	host = setting.Config.Database.Host
+	tablePrefix = setting.Config.Database.TablePrefix
 
 	dbLink := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		user,

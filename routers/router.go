@@ -11,7 +11,7 @@ import (
 
 func InitRouter() *gin.Engine {
 	r := gin.Default()
-	gin.SetMode(setting.RunMode)
+	gin.SetMode(setting.Config.Server.RunMode)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

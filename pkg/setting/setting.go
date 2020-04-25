@@ -1,56 +1,68 @@
 package setting
 
 import (
-	"github.com/go-ini/ini"
-
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
 	"log"
 	"time"
 )
 
-var (
-	Cfg     *ini.File
-	RunMode string
+type AppConfig struct {
+	JwtSecret       string   `yaml:"jwt_secret"`
+	PageSize        int      `yaml:"page_size"`
+	RuntimeRootPath string   `yaml:"runtime_root_path"`
+	ImagePrefixUrl  string   `yaml:"image_prefix_url"`
+	ImageSavePath   string   `yaml:"image_save_path"`
+	ImageMaxSize    int      `yaml:"image_max_size"`
+	ImageAllowExts  []string `yaml:"image_allow_exts"`
+	LogSavePath     string   `yaml:"log_save_path"`
+	LogSaveName     string   `yaml:"log_save_name"`
+	LogSaveExt      string   `yaml:"log_save_ext"`
+	TimeFormat      string   `yaml:"time_format"`
+}
 
-	HTTPPort     int
-	ReadTimeout  time.Duration
-	WriteTimeout time.Duration
+type ServerConfig struct {
+	RunMode      string        `yaml:"run_mode"`
+	HTTPPort     int           `yaml:"HTTP_port"`
+	ReadTimeout  time.Duration `yaml:"read_timeout"`
+	WriteTimeout time.Duration `yaml:"write_timeout"`
+}
 
-	PageSize  int
-	JwtSecret string
-)
+type DatabaseConfig struct {
+	Type        string `yaml:"type"`
+	User        string `yaml:"user"`
+	Password    string `yaml:"password"`
+	Host        string `yaml:"host"`
+	Name        string `yaml:"name"`
+	TablePrefix string `yaml:"table_prefix"`
+}
+
+type ConfigYaml struct {
+	App      AppConfig      `yaml:"app"`
+	Server   ServerConfig   `yaml:"server"`
+	Database DatabaseConfig `yaml:"database"`
+}
+
+var Config = &ConfigYaml{}
 
 func init() {
-	var err error
-	Cfg, err = ini.Load("conf/app.ini")
+	Config = new(ConfigYaml)
+
+	filename := "conf/app.yaml"
+	yamlFile, err := ioutil.ReadFile(filename)
 	if err != nil {
-		log.Fatalf("Fail to parse 'conf/app.ini':%v", err)
+		log.Fatalf("read file err : %v\n", err)
+		return
+	}
+	err = yaml.Unmarshal(yamlFile, Config)
+	if err != nil {
+		log.Fatalf("yaml unmarshal err : %v\n", err)
+		return
 	}
 
-	LoadBase()
-	LoadServer()
-	LoadApp()
-}
+	Config.App.ImageMaxSize = Config.App.ImageMaxSize * 1024 * 1024
 
-func LoadBase() {
-	RunMode = Cfg.Section("").Key("RUN_MODE").MustString("debug")
-}
-
-func LoadServer() {
-	sec, err := Cfg.GetSection("server")
-	if err != nil {
-		log.Fatalf("Fail to get section 'server':%v", err)
-	}
-	HTTPPort = sec.Key("HTTP_PORT").MustInt(9091)
-	ReadTimeout = time.Duration(sec.Key("READ_TIMEOUT").MustInt(60)) * time.Second
-	WriteTimeout = time.Duration(sec.Key("WRITE_TIMEOUT").MustInt(60)) * time.Second
-}
-
-func LoadApp() {
-	sec, err := Cfg.GetSection("app")
-	if err != nil {
-		log.Fatalf("Fail to get section app %v", err)
-	}
-	JwtSecret = sec.Key("JWT_SECRET").MustString("GO_BLOG")
-	PageSize = sec.Key("PAGESIZE").MustInt(10)
+	Config.Server.ReadTimeout = Config.Server.ReadTimeout * (time.Second)
+	Config.Server.WriteTimeout = Config.Server.WriteTimeout * (time.Second)
 
 }

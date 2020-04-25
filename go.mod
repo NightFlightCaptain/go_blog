@@ -15,5 +15,5 @@ require (
 	github.com/swaggo/swag v1.5.1
 	github.com/unknwon/com v1.0.1
 	golang.org/x/net v0.0.0-20200421231249-e086a090c8fd // indirect
-	gopkg.in/ini.v1 v1.55.0 // indirect
+	gopkg.in/yaml.v2 v2.2.8
 )

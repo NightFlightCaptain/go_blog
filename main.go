@@ -20,10 +20,10 @@ import (
 func main() {
 	router := routers.InitRouter()
 	s := &http.Server{
-		Addr:           fmt.Sprintf(":%d", setting.HTTPPort),
+		Addr:           fmt.Sprintf(":%d", setting.Config.Server.HTTPPort),
 		Handler:        router,
-		ReadTimeout:    setting.ReadTimeout,
-		WriteTimeout:   setting.WriteTimeout,
+		ReadTimeout:    time.Duration(setting.Config.Server.ReadTimeout),
+		WriteTimeout:   time.Duration(setting.Config.Server.WriteTimeout),
 		MaxHeaderBytes: 1 << 20,
 	}
 
