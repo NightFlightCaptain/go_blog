@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/unknwon/com"
 	"go_blog/models"
-	"go_blog/pkg"
+	"go_blog/pkg/app"
 	"go_blog/pkg/e"
 	"go_blog/pkg/setting"
 	"go_blog/pkg/util"
@@ -41,7 +41,7 @@ func GetArticle(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, pkg.GetResponse(code, data))
+	c.JSON(http.StatusOK, app.GetResponse(code, data))
 }
 
 func GetArticles(c *gin.Context) {
@@ -73,7 +73,7 @@ func GetArticles(c *gin.Context) {
 			log.Printf("err.key :%s, err.message: %s ", err.Key, err.Message)
 		}
 	}
-	c.JSON(http.StatusOK, pkg.GetResponse(code, data))
+	c.JSON(http.StatusOK, app.GetResponse(code, data))
 }
 
 func AddArticle(c *gin.Context) {
@@ -110,7 +110,7 @@ func AddArticle(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, pkg.GetResponse(code, nil))
+	c.JSON(http.StatusOK, app.GetResponse(code, nil))
 }
 
 func EditArticle(c *gin.Context) {
@@ -168,7 +168,7 @@ func EditArticle(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, pkg.GetResponse(code, nil))
+	c.JSON(http.StatusOK, app.GetResponse(code, nil))
 
 }
 
@@ -192,6 +192,6 @@ func DeleteArticle(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, pkg.GetResponse(code, nil))
+	c.JSON(http.StatusOK, app.GetResponse(code, nil))
 
 }

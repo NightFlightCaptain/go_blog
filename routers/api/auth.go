@@ -4,7 +4,7 @@ import (
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
 	"go_blog/models"
-	"go_blog/pkg"
+	"go_blog/pkg/app"
 	"go_blog/pkg/e"
 	"go_blog/pkg/util"
 	"log"
@@ -45,5 +45,5 @@ func GetAuth(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, pkg.GetResponse(code, data))
+	c.JSON(http.StatusOK, app.GetResponse(code, data))
 }

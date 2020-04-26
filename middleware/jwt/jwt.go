@@ -2,7 +2,7 @@ package jwt
 
 import (
 	"github.com/gin-gonic/gin"
-	"go_blog/pkg"
+	"go_blog/pkg/app"
 	"go_blog/pkg/e"
 	"go_blog/pkg/util"
 	"net/http"
@@ -28,7 +28,7 @@ func JWT() gin.HandlerFunc {
 		}
 
 		if code != e.SUCCESS {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, pkg.GetResponse(code, data))
+			c.AbortWithStatusJSON(http.StatusUnauthorized, app.GetResponse(code, data))
 			return
 		}
 		c.Next()

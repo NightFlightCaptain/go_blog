@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"go_blog/pkg"
+	"go_blog/pkg/app"
 	"go_blog/pkg/e"
 	"go_blog/pkg/logging"
 	"go_blog/pkg/upload"
@@ -17,7 +17,7 @@ func UploadImage(c *gin.Context) {
 	if err != nil {
 		logging.Warning(err)
 		code = e.ERROR
-		c.JSON(http.StatusOK, pkg.GetResponse(code, data))
+		c.JSON(http.StatusOK, app.GetResponse(code, data))
 	}
 
 	if image == nil {
@@ -45,5 +45,5 @@ func UploadImage(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, pkg.GetResponse(code, data))
+	c.JSON(http.StatusOK, app.GetResponse(code, data))
 }

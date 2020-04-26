@@ -30,3 +30,10 @@ database:
   host: localhost:3306
   name: go_blog
   table_prefix: blog_
+
+redis:
+  host: localhost:6379
+  password:
+  max_idle: 30
+  max_active: 30
+  idle_timeout: 200

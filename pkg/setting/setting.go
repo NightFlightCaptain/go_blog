@@ -37,10 +37,19 @@ type databaseConfig struct {
 	TablePrefix string `yaml:"table_prefix"`
 }
 
+type redisConfig struct {
+	Host        string        `yaml:"host"`
+	Password    string        `yaml:"password"`
+	MaxIdle     int           `yaml:"max_idle"`
+	MaxActive   int           `yaml:"max_active"`
+	IdleTimeout time.Duration `yaml:"idle_timeout"`
+}
+
 type configYaml struct {
 	App      appConfig      `yaml:"app"`
 	Server   serverConfig   `yaml:"server"`
 	Database databaseConfig `yaml:"database"`
+	Redis    redisConfig    `yaml:"redis"`
 }
 
 var Config = &configYaml{}
