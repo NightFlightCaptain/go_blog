@@ -18,6 +18,7 @@ func InitRouter() *gin.Engine {
 	r.StaticFS("upload/images", http.Dir(upload.GetImageFullPath()))
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	r.GET("/auth", api.GetAuth)
 	r.POST("/upload", api.UploadImage)
 
@@ -28,10 +29,11 @@ func InitRouter() *gin.Engine {
 
 	tags := r.Group("/tag")
 	{
+		tags.GET("/:id", api.GetTag)
 		tags.GET("", api.GetTags)
 		tags.POST("", api.AddTag)
 		tags.PUT("", api.EditTag)
-		tags.DELETE("", api.DeleteTag)
+		tags.DELETE("/:id", api.DeleteTag)
 	}
 
 	articles := r.Group("/article")
@@ -39,7 +41,7 @@ func InitRouter() *gin.Engine {
 		articles.GET("/:id", api.GetArticle)
 		articles.GET("/", api.GetArticles)
 		articles.POST("/", api.AddArticle)
-		articles.PUT("/:id", api.EditArticle)
+		articles.PUT("/", api.EditArticle)
 		articles.DELETE("/:id", api.DeleteArticle)
 	}
 

@@ -6,11 +6,15 @@ import (
 	"go_blog/pkg/setting"
 )
 
-func GetPage(c *gin.Context) int {
+func GetPage(c *gin.Context) (int, int) {
 	result := 0
 	page, _ := com.StrTo(c.Query("page")).Int()
-	if page > 0 {
-		result = (page - 1) * setting.Config.App.PageSize
+	size, _ := com.StrTo(c.Query("size")).Int()
+	if size == 0 {
+		size = setting.Config.App.PageSize
 	}
-	return result
+	if page > 0 {
+		result = (page - 1) * size
+	}
+	return result, size
 }
